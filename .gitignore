@@ -1,0 +1,14 @@
+*.so
+*.pyc
+output
+tensorboard
+lib/build
+lib/pycocotools
+lib/pycocotools/_mask.c
+lib/pycocotools/_mask.so
+.idea
+.DS_Store
+vgg_model_weights/
+lib/datasets/VOCdevkit-matlab-wrapper/get_voc_opts.m
+lib/datasets/VOCdevkit-matlab-wrapper/voc_eval.m
+lib/datasets/VOCdevkit-matlab-wrapper/xVOCap.m
