@@ -16,6 +16,8 @@ cfg = __C
 #
 # Training options
 #
+
+
 __C.TRAIN = edict()
 
 # Initial learning rate
@@ -203,6 +205,10 @@ __C.TEST.RPN_POST_NMS_TOP_N = 300
 # Testing mode, default to be 'nms', 'top' is slower but better
 # See report for details
 __C.TEST.MODE = 'nms'
+
+__C.TEST.top_scores_image = 10
+__C.TEST.min_score_thresh = 0.1
+__C.TEST.bin_feat_thresh = 0.1
 
 # Only useful when TEST.MODE is 'top', specifies the number of top proposals to select
 __C.TEST.RPN_TOP_N = 5000
