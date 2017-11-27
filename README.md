@@ -9,3 +9,11 @@ Steps to set up docker with elasticsearch:
     * Run ```sysctl -w vm.max_map_count=262144```
 * Run ```docker-compose up```
 * Check in browser http://0.0.0.0:9200
+
+* Delete index if any:
+
+    ```curl -XDELETE http://localhost:9200/visual_discovery```
+    
+* Add index :
+
+    ```curl -XPUT http://localhost:9200/visual_discovery -d @schema.json```  

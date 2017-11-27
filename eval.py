@@ -31,6 +31,7 @@ CLASSES = ('background',
 'keyboard', 'cell phone', 'microwave', 'oven','toaster', 'sink', 'refrigerator',
 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush')
 
+def post_to_es(detected_objects):
 def build_det_dict(results):
   detected_objects = {}
   for cls_ind, cls in enumerate(CLASSES[1:]):
@@ -38,13 +39,10 @@ def build_det_dict(results):
     for i in range(len(dets)):
       cls_object = {
         "class": cls,
-        "x1": int(dets[i][0]),
-        "y1": int(dets[i][1]),
-        "x2": int(dets[i][2]),
-        "y2": int(dets[i][3]),
+        "bbox": [int(dets[i][0]), int(dets[i][1]), int(dets[i][2]), int(dets[i][3])] # x1, y1, x2, y2
         "score": dets[i][4],
-        "w": abs(int(dets[i][2]) - int(dets[i][0])), # x2 - x1
-        "h": abs(int(dets[i][3]) - int(dets[i][1])), # y2 - y1
+        # "w": abs(int(dets[i][2]) - int(dets[i][0])), # x2 - x1
+        # "h": abs(int(dets[i][3]) - int(dets[i][1])), # y2 - y1
         "feat": feature_maps[i],
         "bin_feat": binarize_feature(feature_maps[i])
       }
@@ -106,6 +104,8 @@ if __name__ == '__main__':
 
   im_path = '/Users/ioanaveronicachelu/visual_discovery/images/val2017/000000000776.jpg'
   detected_objects = extract(sess, net, im_path)
+
+  post_to_es(detected_objects)
 
   print("wingardium leviosa")
 
