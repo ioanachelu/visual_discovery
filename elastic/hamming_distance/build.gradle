@@ -1,0 +1,22 @@
+group 'visual_discovery'
+version '0.0.1'
+
+apply plugin: 'java'
+apply plugin: 'maven'
+
+sourceCompatibility = JavaVersion.VERSION_1_8.toString()
+targetCompatibility = JavaVersion.VERSION_1_8.toString()
+
+
+dependencies {
+    compile 'org.elasticsearch:elasticsearch:5.6.3'
+}
+
+repositories {
+        mavenCentral()
+    }
+
+jar {
+    baseName = 'hammingdistance'
+    version =  '0.0.1'
+}
