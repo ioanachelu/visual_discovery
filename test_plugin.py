@@ -1,5 +1,6 @@
 from elasticsearch import Elasticsearch
 from elasticsearch import helpers
+import numpy as np
 
 ES_INDEX_NAME = 'visual_discovery'
 ES_DOC_TYPE = 'image_index'
@@ -65,10 +66,14 @@ def search_image(phash):
   return search_results
 
 actions = []
-actions = push_image("1111111000", actions)
-actions = push_image("1111111100", actions)
-actions = push_image("1111111110", actions)
+v = np.packbits(np.asarray([1, 1, 1, 1, 1, 1, 1, 0, 0, 0])).view("uint32")
+actions = push_image(v, actions)
+v = np.packbits([1, 1, 1, 1, 1, 1, 1, 1, 0, 0]).view("uint32")
+actions = push_image(v, actions)
+v = np.packbits([1, 1, 1, 1, 1, 1, 1, 1, 1, 0]).view("uint32")
+actions = push_image(v, actions)
 helpers.bulk(es, actions)
 
-search_results = search_image("1111111111")
+v = np.packbits([1, 1, 1, 1, 1, 1, 1, 1, 1, 1]).view("uint32")
+search_results = search_image(v)
 print(search_results)

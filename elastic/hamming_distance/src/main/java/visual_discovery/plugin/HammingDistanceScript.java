@@ -4,40 +4,50 @@ import org.elasticsearch.index.fielddata.ScriptDocValues;
 import org.elasticsearch.script.AbstractDoubleSearchScript;
 
 import java.util.Map;
+import java.util.List;
 
 public class HammingDistanceScript extends AbstractDoubleSearchScript {
 
     private String field;
-    private String hash;
-    private int length;
+    private long[] hash;
 
-    public HammingDistanceScript(Map<String, Object> params) {
-        super();
-        field = (String) params.get("field");
-        hash = (String) params.get("hash");
-        if (hash != null) {
-            length = hash.length();
-        }
+    public HammingDistanceScript(String field, long[] hash) {
+        this.field = field;
+		this.hash = hash;
     }
 
-    private double hammingDistance(CharSequence lhs, CharSequence rhs) {
-        double distance = (double) length;
-        for (int i = 0, l = lhs.length(); i < l; i++) {
-            if (lhs.charAt(i) != rhs.charAt(i)) {
-                distance--;
-            }
-        }
+    private double hammingDistance(long[] lhs, long[] rhs) {
+        double distance = 0.0f;
+        long v1, v2;
+		for (int i = 0; i < lhs.length; i++) {
+			v1 = lhs[i];
+			v2 = rhs[i];
+
+			distance += (32 - Long.bitCount(v1 ^ v2));
+		}
+//        distance += (32 - Long.bitCount(v1 ^ v2));
+
+//        for (int i = 0, l = lhs.length(); i < l; i++) {
+//            if (lhs.charAt(i) != rhs.charAt(i)) {
+//                distance--;
+//            }
+//        }
 
         return distance;
     }
 
     @Override
     public double runAsDouble() {
-        String fieldValue = ((ScriptDocValues.Strings) doc().get(field)).getValue();
-        if (hash == null || fieldValue == null || fieldValue.length() != hash.length()) {
-            return 0.0f;
+        List<Long> field_value_array = ((ScriptDocValues.Longs) doc().get(field)).getValues();
+
+        long[] field_value = new long[field_value_array.size()];
+		for (int i = 0; i < field_value_array.size(); i++)
+			field_value[i] = field_value_array.get(i).longValue();
+
+        if (hash == null || field_value == null) {
+            return -1f;
         }
 
-        return hammingDistance(fieldValue, hash);
+        return hammingDistance(field_value, hash);
     }
 }
