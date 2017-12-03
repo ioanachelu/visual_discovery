@@ -15,12 +15,21 @@ public class HammingDistanceScriptFactory implements NativeScriptFactory {
 		if (field == null) {
 			throw new ScriptException("Field data param field is missing", null, null, "hamming_distance", "native");
 		}
-		ArrayList<Number> hash_array = (ArrayList<Number>) params.get("hash");
-		if (hash_array == null)
-			throw new ScriptException("Param hash is missing", null, null, "hamming_distance", "native");
-		long[] hash = new long[hash_array.size()];
-		for (int i = 0; i < hash_array.size(); i++)
-			hash[i] = hash_array.get(i).longValue();
+
+		String str = (String) params.get("hash");
+        String[] hash_array = str.split(",");  //Split the previous String for separate by commas
+        System.out.println(str);
+        long[] hash = new long[hash_array.length];
+        for (int i = 0; i < hash_array.length; i++)
+            hash[i] = Long.parseLong(hash_array[i]);
+
+
+//		ArrayList<Number> hash_array = (ArrayList<Number>) params.get("hash");
+//		if (hash_array == null)
+//			throw new ScriptException("Param hash is missing", null, null, "hamming_distance", "native");
+//		long[] hash = new long[hash_array.size()];
+//		for (int i = 0; i < hash_array.size(); i++)
+//			hash[i] = hash_array.get(i).longValue();
 
         return new HammingDistanceScript(field, hash);
     }

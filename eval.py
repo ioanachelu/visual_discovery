@@ -16,7 +16,7 @@ import argparse
 import os
 import tensorflow as tf
 from nets.vgg16 import vgg16
-
+from math import ceil
 CLASSES = ('background',
 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
 'bus','train', 'truck', 'boat', 'traffic light', 'fire hydrant',

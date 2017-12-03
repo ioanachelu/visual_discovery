@@ -38,11 +38,12 @@ public class HammingDistanceScript extends AbstractDoubleSearchScript {
 
     @Override
     public double runAsDouble() {
-        List<Long> field_value_array = ((ScriptDocValues.Longs) doc().get(field)).getValues();
-
-        long[] field_value = new long[field_value_array.size()];
-		for (int i = 0; i < field_value_array.size(); i++)
-			field_value[i] = field_value_array.get(i).longValue();
+        String str = ((ScriptDocValues.Strings) doc().get(field)).getValue();
+        String[] array = str.split(",");  //Split the previous String for separate by commas
+        System.out.println(str);
+        long[] field_value = new long[array.length];
+        for (int i = 0; i < array.length; i++)
+            field_value[i] = Long.parseLong(array[i]);
 
         if (hash == null || field_value == null) {
             return -1f;
