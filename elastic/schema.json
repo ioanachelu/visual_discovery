@@ -8,7 +8,7 @@
             "properties": {
               "hash": {
                 "type": "string",
-                "fielddata": true
+                "index": "not_analyzed"
               }
             }
         }
