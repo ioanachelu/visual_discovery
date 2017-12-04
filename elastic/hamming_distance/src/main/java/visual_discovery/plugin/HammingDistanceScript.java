@@ -45,7 +45,7 @@ public class HammingDistanceScript extends AbstractDoubleSearchScript {
         for (int i = 0; i < array.length; i++)
             field_value[i] = Long.parseLong(array[i]);
 
-        if (hash == null || field_value == null) {
+        if (hash == null || field_value == null || hash.length != field_value.length) {
             return -1f;
         }
 
